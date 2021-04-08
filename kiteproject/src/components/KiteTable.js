@@ -37,13 +37,12 @@ const KiteTable = () => {
                     {headerGroups.map((headerGroup) =>
                         <tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map((column) => (   //Header is defined in ColumnsOfTable
-                                // eslint-disable-next-line react/jsx-no-comment-textnodes
-                                <th{...column.getHeaderProps(column.getSortByToggleProps)}>  // add properties related to the sorted feature on each column
+                                <th{...column.getHeaderProps(column.getSortByToggleProps)}>  
                                     {column.render('Header')}   
                                     <span className='columnName'> 
                                     { column.isSorted?(column.isSortedDesc ? arrawIcon.up :arrawIcon.down):arrawIcon.updown } 
-                                    </span> 
-                                 </th> 
+                                    </span>  
+                                 </th> // add properties related to the sorted feature on each column
                             ))}
                         </tr>
                     )}
