@@ -1,10 +1,16 @@
 import React, { useMemo, useState } from 'react';
-import { useTable } from 'react-table';
+import { useTable,useSortBy } from 'react-table';
 import useFetch from './useFetch';
 import ColumnsOfTable from './ColumnsOfTable';
 import './KiteTable.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowsAltV,faLongArrowAltDown,faLongArrowAltUp } from '@fortawesome/free-solid-svg-icons'
 
 const KiteTable = () => {
+    const arrawIcon = {updown:<FontAwesomeIcon icon={faArrowsAltV}/>,
+                       up:<FontAwesomeIcon icon={faLongArrowAltDown}/>,
+                       down:<FontAwesomeIcon icon={faLongArrowAltUp}/>}
+
     let url = "https://606cae1c603ded0017502834.mockapi.io/spot"
     const { data, isPending, error } = useFetch(url)
 
@@ -12,20 +18,17 @@ const KiteTable = () => {
     const locationData = useMemo(() => data, [data])
     //const [ceva,setceva]=useState();setceva(prevcev=>!prevcev); 
 
-
-    const tableInstance = useTable({  //unsing usetable hook get all the properties of table
-        columns: columnsNames,
-        data: locationData
-    })
-
     const {
         getTableProps,
         getTableBodyProps,
         headerGroups,
         rows,
         prepareRow,
-
-    } = tableInstance
+    } = useTable({  //unsing usetable hook get all the properties of table
+        columns: columnsNames,
+        data: locationData
+    },
+    useSortBy)   //add sorting feature to my table instance
 
     return (
         <div>
@@ -33,9 +36,14 @@ const KiteTable = () => {
                 <thead>
                     {headerGroups.map((headerGroup) =>
                         <tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map((column) => (
-                                <th{...column.getHeaderProps()}>
-                                    {column.render('Header')}  </th> //Header is defined in ColumnsOfTable
+                            {headerGroup.headers.map((column) => (   //Header is defined in ColumnsOfTable
+                                // eslint-disable-next-line react/jsx-no-comment-textnodes
+                                <th{...column.getHeaderProps(column.getSortByToggleProps)}>  // add properties related to the sorted feature on each column
+                                    {column.render('Header')}   
+                                    <span className='columnName'> 
+                                    { column.isSorted?(column.isSortedDesc ? arrawIcon.up :arrawIcon.down):arrawIcon.updown } 
+                                    </span> 
+                                 </th> 
                             ))}
                         </tr>
                     )}

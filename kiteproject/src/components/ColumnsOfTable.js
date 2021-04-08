@@ -15,6 +15,14 @@ const ColumnsOfTable=[
         Header:'Longitude',
         accessor:'long'
     }, 
+    {
+        Header:'Wind Prob',
+        accessor:'probability'
+    }, 
+    {
+        Header:'When should go',
+        accessor:'month'
+    }, 
 ]
     
 
