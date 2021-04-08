@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useTable } from 'react-table';
 import useFetch from './useFetch';
 import ColumnsOfTable from './ColumnsOfTable';
+import './KiteTable.css'
 
 const KiteTable = () => {
     let url = "https://606cae1c603ded0017502834.mockapi.io/spot"
