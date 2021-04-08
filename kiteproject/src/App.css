@@ -4,5 +4,7 @@
 
 .leaflet-container{
   width: 100vw;
-  height: 100vw;
+  height: 25vw;
+  margin-top: 50px;
+  position:relative;
 }
