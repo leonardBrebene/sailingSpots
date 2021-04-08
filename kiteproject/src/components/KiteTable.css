@@ -1,12 +1,9 @@
 table {
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
-    width: 80%;
+    width: 80vw;
     height :500px;
-    margin: 3% 10% 3% 10% ;
-    margin-left:9%;
-    margin-right:9%;
-    text-align: center;
+    margin:10px 9vw 10px 9vw ;
   }
   
   table td, table th {
@@ -25,6 +22,18 @@ table {
     background-color: #4CAF50;
     color: white;
   }
-  .columnName{
+  .columnArraw{
     margin-left: 5px;
+  }
+  .prevNextButton{
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 25px;
+    border: 2px solid #4CAF50;
+    margin: 3px;
+    
+  }
+  .buttonContainer{
+    display: inline;
+    margin-left:45% ;
   }

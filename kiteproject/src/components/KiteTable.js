@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { useTable,useSortBy } from 'react-table';
+import { useTable,useSortBy,usePagination } from 'react-table';
 import useFetch from './useFetch';
 import ColumnsOfTable from './ColumnsOfTable';
 import './KiteTable.css'
@@ -22,14 +22,20 @@ const KiteTable = () => {
         getTableProps,
         getTableBodyProps,
         headerGroups,
-        rows,
+        page,
+        nextPage,
+        previousPage,
+        canNextPage,
+        canPreviousPage,
+        state,
+        pageOptions,
         prepareRow,
     } = useTable({  //unsing usetable hook get all the properties of table
         columns: columnsNames,
         data: locationData
     },
-    useSortBy)   //add sorting feature to my table instance
-
+    useSortBy,usePagination)   //add sorting feature to my table instance
+    const {pageIndex}= state
     return (
         <div>
             <table {...getTableProps()}>
@@ -39,7 +45,7 @@ const KiteTable = () => {
                             {headerGroup.headers.map((column) => (   //Header is defined in ColumnsOfTable
                                 <th{...column.getHeaderProps(column.getSortByToggleProps)}>  
                                     {column.render('Header')}   
-                                    <span className='columnName'> 
+                                    <span className='columnArraw'> 
                                     { column.isSorted?(column.isSortedDesc ? arrawIcon.up :arrawIcon.down):arrawIcon.updown } 
                                     </span>  
                                  </th> // add properties related to the sorted feature on each column
@@ -49,7 +55,7 @@ const KiteTable = () => {
                 </thead>
 
                 <tbody {...getTableBodyProps()}>
-                    {rows.map(row => {
+                    {page.map(row => {
                         prepareRow(row)
                         return (
                             <tr{...row.getRowProps()}>
@@ -63,6 +69,13 @@ const KiteTable = () => {
                     })}
                 </tbody>
             </table>
+            <div className='buttonContainer'>
+                <span  >Page{''}
+                {pageIndex+1} of {pageOptions.length } 
+                </span>
+                <button className='prevNextButton'  onClick={()=>previousPage() } disabled={!canPreviousPage}>  Previous</button>
+                <button className='prevNextButton' onClick={()=>nextPage()} disabled={!canNextPage}>Next</button>
+            </div>
             {error && <div>{error}</div>}
             {isPending && <div>Loading..</div>}
         </div>
