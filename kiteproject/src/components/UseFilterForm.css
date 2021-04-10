@@ -1,0 +1,14 @@
+.input-field{
+    
+    display: flex;
+    margin-top: 20px  ;
+}
+.label-field{
+    display: flex;
+    font-weight: bold;
+    margin-top: 20px  ;
+    color: blue;
+    text-align: center;
+    margin-left: 30%;
+    margin-right: 30%;
+}

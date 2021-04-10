@@ -4,7 +4,7 @@ import FilterPopup from './FilterPopup'
 import { useState } from 'react'
 import useFilterForm from'./useFilterForm'
 import filter from '../images/filter.png'
-import './kiteMap.css'
+import './KiteMap.css'
 
 const KiteMap = () => {
 
@@ -13,6 +13,7 @@ const KiteMap = () => {
   return (
 
     <div>
+      <div className= 'addSpotButton'>Adds Spot</div>
       {error && <div>{error}</div>}
       {isPending && <div>Loading..</div>}
       
@@ -52,6 +53,7 @@ const KiteMap = () => {
                 <p>LATITUDE <br />{location.lat}</p>
                 <p>LONGITUDE<br /> {location.long}</p>
                 <p>BEST PERIOD OF TIME <br /> {location.month} </p>
+                <div onClick={(e)=>e.preventDefault()}>Add to favorites</div>
               </div>
             </Popup>)
           </Marker>)}
