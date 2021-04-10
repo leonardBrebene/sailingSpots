@@ -1,15 +1,18 @@
-import React, { useMemo, useState } from 'react';
-import { useTable,useSortBy,usePagination } from 'react-table';
+import React, { useMemo } from 'react';
+import { useTable, useSortBy, usePagination } from 'react-table';
 import useFetch from './useFetch';
 import ColumnsOfTable from './ColumnsOfTable';
 import './KiteTable.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowsAltV,faLongArrowAltDown,faLongArrowAltUp } from '@fortawesome/free-solid-svg-icons'
+import { faArrowsAltV, faLongArrowAltDown, faLongArrowAltUp } from '@fortawesome/free-solid-svg-icons'
+
 
 const KiteTable = () => {
-    const arrawIcon = {updown:<FontAwesomeIcon icon={faArrowsAltV}/>,
-                       up:<FontAwesomeIcon icon={faLongArrowAltDown}/>,
-                       down:<FontAwesomeIcon icon={faLongArrowAltUp}/>}
+    const arrawIcon = {
+        updown: <FontAwesomeIcon icon={faArrowsAltV} />,
+        up: <FontAwesomeIcon icon={faLongArrowAltDown} />,
+        down: <FontAwesomeIcon icon={faLongArrowAltUp} />
+    }
 
     let url = "https://606cae1c603ded0017502834.mockapi.io/spot"
     const { data, isPending, error } = useFetch(url)
@@ -34,21 +37,21 @@ const KiteTable = () => {
         columns: columnsNames,
         data: locationData
     },
-    useSortBy,usePagination)   //add sorting feature to my table instance
-    const {pageIndex}= state
+        useSortBy, usePagination)   //add sorting feature to my table instance
+    const { pageIndex } = state
     return (
         <div>
             <table {...getTableProps()}>
                 <thead>
                     {headerGroups.map((headerGroup) =>
-                        <tr {...headerGroup.getHeaderGroupProps()}>
+                        <tr{...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map((column) => (   //Header is defined in ColumnsOfTable
-                                <th{...column.getHeaderProps(column.getSortByToggleProps)}>  
-                                    {column.render('Header')}   
-                                    <span className='columnArraw'> 
-                                    { column.isSorted?(column.isSortedDesc ? arrawIcon.up :arrawIcon.down):arrawIcon.updown } 
-                                    </span>  
-                                 </th> // add properties related to the sorted feature on each column
+                                <th{...column.getHeaderProps(column.getSortByToggleProps)}>
+                                    {column.render('Header')}
+                                    <span className='columnArraw'>
+                                        {column.isSorted ? (column.isSortedDesc ? arrawIcon.up : arrawIcon.down) : arrawIcon.updown}
+                                    </span>
+                                </th> // add properties related to the sorted feature on each column
                             ))}
                         </tr>
                     )}
@@ -64,17 +67,17 @@ const KiteTable = () => {
                                         {cell.render('Cell')}
                                     </td>)
                                 })
-                                } </tr>
+                                }</tr>
                         )
                     })}
                 </tbody>
             </table>
             <div className='buttonContainer'>
-                <span  >Page{''}
-                {pageIndex+1} of {pageOptions.length } 
+                <span  >Page {''}
+                    {pageIndex + 1} of {pageOptions.length}
                 </span>
-                <button className='prevNextButton'  onClick={()=>previousPage() } disabled={!canPreviousPage}>  Previous</button>
-                <button className='prevNextButton' onClick={()=>nextPage()} disabled={!canNextPage}>Next</button>
+                <button className='prevNextButton' onClick={() => previousPage()} disabled={!canPreviousPage}>  Previous</button>
+                <button className='prevNextButton' onClick={() => nextPage()} disabled={!canNextPage}>Next</button>
             </div>
             {error && <div>{error}</div>}
             {isPending && <div>Loading..</div>}

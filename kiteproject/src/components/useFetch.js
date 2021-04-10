@@ -1,13 +1,17 @@
 import {useEffect, useState} from 'react'
 
 
+
 const useFetch = (url) => {
     const[data, setData]=useState([]);
     const[isPending, setIsPending]=useState(true);
     const[error,setError]=useState(null);
+    const[initialData,setInitialData]=useState(null);
+    
 
     useEffect(() => {
         setTimeout(() => {
+            console.log('am intrat in useeffect')
             fetch(url)
                 .then(res => {
                     if (!res.ok) {
@@ -17,6 +21,7 @@ const useFetch = (url) => {
                 })
                 .then(data=>{
                     setData(data);
+                    setInitialData(data)
                     setIsPending(false);
                     setError(null);
                 })
@@ -24,11 +29,14 @@ const useFetch = (url) => {
                     setIsPending(false);
                     setError(err.message)
                 })
-
+                
         }, 1000);
+        
     }, [url])
+    
+    
 
-    return {data,isPending,error}
+    return {data,initialData,isPending,error,setData,}
 }
 
 export default useFetch
