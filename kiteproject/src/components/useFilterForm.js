@@ -14,6 +14,16 @@ const useFilterForm = () => {
     setData(initialData.filter((locations) => {
       return locations.country.toLowerCase().includes(country.toLowerCase())&&locations.probability>=windProb;
     }))
+
+  //   setData(prevState => prevState.filter(item => {
+  //     if (item.country.toLowerCase().includes(country.toLowerCase())&&item.probability>=windProb) {
+  //         return {
+  //             ...item,
+  //         }
+  //     } console.log('am intrat')
+  //     return item
+  // }))
+ 
   }, [country,windProb,setData,initialData])
 
 
@@ -35,6 +45,6 @@ const useFilterForm = () => {
      
     </form>
 
-  return { data, isPending, error, formular }
+  return { data,setData, isPending, error, formular }
 }
 export default useFilterForm;
