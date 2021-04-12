@@ -2,47 +2,43 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { Icon } from 'leaflet';
 import FilterPopup from './FilterPopup'
 import { useState, useEffect } from 'react'
-import useFilterForm from './useFilterForm'
+import FilterForm from './FilterForm'
 import filter from '../images/filter.png'
 import orangeicon from '../images/orange-icon.png'; import blueicon from '../images/blue-icon.png';
 import './KiteMap.css'
-
 import useFetch from './useFetch';
 
 
-const KiteMap = () => {
 
-  const { data, setData, isPending, error, formular } = useFilterForm();
-  const { data: favourites, isPending: favouriteIsPending,} = useFetch("https://606cae1c603ded0017502834.mockapi.io/favourites")
+const KiteMap = () => {
+  const { data, isPending, error, setData } = useFetch("https://606cae1c603ded0017502834.mockapi.io/spot");
+  const { data: favourites, isPending: favouriteIsPending, } = useFetch("https://606cae1c603ded0017502834.mockapi.io/favourites")
   const [isOpen, setIsOpen] = useState(false);
+  const [initialData, setInitialData] = useState(null);
 
 
   useEffect(() => {
-    if (!favouriteIsPending && !isPending) {
-      const locationData = data.map(x => {
-        const flag = favourites.some(favourite => parseInt(favourite.spot) === parseInt(x.id))
+
+    if (!favouriteIsPending && !isPending) {                     //ziua in care am inteles cum merge destructurarea
+      setData((prevState => prevState.map(item => {
+        const item2 = favourites.some(favourite => parseInt(favourite.spot) === parseInt(item.id))
         return {
-          month: x.month,
-          probability: x.probability,
-          long: x.long,
-          lat: x.lat,
-          country: x.country,
-          name: x.name,
-          createdAt: x.createdAt,
-          id: x.id,
-          favourite: flag
+          ...item,
+          favourite: item2
         }
-      })
-      console.log('locationdata', locationData);
-      setData(locationData);
+      })))
     }
-    
+  
+
     console.log('am intrat in useeffect kitemap')
 
-  }, [favourites, isPending, favouriteIsPending,setData])
-  
-  const COLOR1={backgroundColor: 'orange'}
-  const COLOR2={backgroundColor: 'blue'}
+  }, [isPending, favouriteIsPending, setData, favourites])
+
+
+  console.log('initialdata', initialData)
+  const COLOR1 = { backgroundColor: 'orange' }
+  const COLOR2 = { backgroundColor: 'blue' }
+
   const blueIcon = new Icon({
     iconUrl: orangeicon,
     iconSize: [25, 41],
@@ -52,26 +48,36 @@ const KiteMap = () => {
     iconSize: [25, 41],
   });;
 
+  const filterData = (item) => {
+    setData(initialData.filter((location) => {
+      return location.country.toLowerCase().includes(item.country.toLowerCase()) && location.probability >= item.windProb;
+
+    }))
+  }
 
   return (
 
     <div>
+
       <div className='addSpotButton'>Adds Spot</div>
       {error && <div>{error}</div>}
       {isPending && <div>Loading..</div>}
 
-
-
-      <FilterPopup open={isOpen} closeIt={() => { setIsOpen(false) }} >
-        {formular}
-      </FilterPopup>
-
-      <MapContainer center={[35.505, 10.09]} zoom={5} scrollWheelZoom={true}>
+      <MapContainer center={[35.505, 10.09]} zoom={3} scrollWheelZoom={true} >
         <TileLayer
+          onClick={() => { setInitialData(data);}}
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <div onClick={() => setIsOpen(true)} ><img className='filterButton' src={filter} alt='filter' /></div>
+
+        <div onClick={() => {setIsOpen(true); initialData===null&&setInitialData(data); 
+        }} ><img className='filterButton' src={filter} alt='filter' /></div>
+
+        <FilterPopup open={isOpen} closeIt={() => { setIsOpen(false) }} >
+          <FilterForm onFilter={filterData} />
+        </FilterPopup>
+
+        {isOpen===true&&<FilterForm onFilter={filterData} />}
 
         <Marker
           position={[45.097, 25.444]}
@@ -85,7 +91,7 @@ const KiteMap = () => {
         {data.map(location =>
 
           <Marker
-           
+
             icon={location.favourite ? blueIcon : orangeIcon}
             key={location.id}
             position={[location.lat, location.long]}
@@ -102,19 +108,21 @@ const KiteMap = () => {
                 <p>LATITUDE <br />{location.lat}</p>
                 <p>LONGITUDE<br /> {location.long}</p>
                 <p>BEST PERIOD OF TIME <br /> {location.month} </p>
-                <button onClick={(e) => {
-                  e.preventDefault();
-                  setData(prevState => prevState.map(item => {
-                    if (item.id === location.id) {
-                      return {
-                        ...item,
-                        favourite: location.favourite ? false : true
+                <button
+                  style={location.favourite ? COLOR1 : COLOR2} className='addFavoritesButton'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const tempData = (data => data.map(item => {
+                      if (item.id === location.id) {
+                        return {
+                          ...item,
+                          favourite: location.favourite ? false : true
+                        }
                       }
-                    }
-                    return item
-                  }));
-                  
-                }} style={location.favourite ? COLOR1 : COLOR2} className='addFavoritesButton'>Add to favorites</button>
+                      return item
+                    }));
+                    setData(tempData); setInitialData(tempData);
+                  }} >Add to favorites</button>
               </div>
             </Popup>)
           </Marker>)}
