@@ -80,17 +80,15 @@ const KiteMap = () => {
         {isOpen === true && <FilterForm onFilter={filterData} />}
 
         <Marker
-          position={[45.097, 25.444]}
-        >
+          position={[45.097, 25.444]}>
           <Popup>
             Homeland
           </Popup>
         </Marker>
 
-
+        {/* {data && <PopUpComp  initialDataP={initialData}  dataP ={data} />} // am incercat sa integrez Marker intr-o alta componenta*/} 
         {data.map(location =>
-
-          <Marker
+          <Marker 
 
             icon={location.favourite ? blueIcon : orangeIcon}
             key={location.id}
@@ -98,7 +96,7 @@ const KiteMap = () => {
             onClick={initialData === null && setInitialData(data)}
           >
 
-            <Popup                                           //{!data===null&& <PopUpComp location={location} initialDataP={initialData}  dataP ={data} />}
+            <Popup                                           
               position={[location.lat, location.long]}
               onClick={initialData === null && setInitialData(data)}
             >
@@ -129,7 +127,6 @@ const KiteMap = () => {
                   }} >Add to favorites</button>
               </div>
             </Popup>)
-
           </Marker>)}
 
       </MapContainer>
