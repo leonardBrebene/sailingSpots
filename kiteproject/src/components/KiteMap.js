@@ -9,7 +9,7 @@ import './KiteMap.css'
 import useFetch from './useFetch';
 import PopUpComp from './PopUpComp';
 import deleteObject from './deleteObject';
-import postObject from './postObject';
+import PostObject from './PostObject';
 
 
 const KiteMap = () => {
@@ -113,7 +113,7 @@ const KiteMap = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     if (location.favourite) { deleteObject('spot', location.id); }
-                      else {postObject('favourites',{spot:location.id, createdAt:new Date()} ); }
+                      else {PostObject('favourites',{spot:location.id, createdAt:new Date()} ); }
                     const tempData = (data => data.map(item => {
                       if (item.id === location.id) {
                         return {
