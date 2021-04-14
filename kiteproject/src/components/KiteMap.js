@@ -58,9 +58,11 @@ const KiteMap = () => {
 
     <div>
 
-      <div className='addSpotButton'>Adds Spot</div>
+      {/* <div className='addSpotButton'>Adds Spot</div> */}
+     <div style={{position:'relative'}}>
       {error && <div>{error}</div>}
       {isPending && <div>Loading..</div>}
+      </div>
 
       <MapContainer center={[35.505, 10.09]} zoom={3} scrollWheelZoom={true}  >
         <TileLayer
@@ -102,7 +104,7 @@ const KiteMap = () => {
             >
               <div>
 
-                <h2>{location.name}</h2> <p>{data.indexOf(location)}</p>
+                
                 <p> LocationID<br />{location.probability}</p>
                 <p> WIND PROBABILITY<br />{location.probability}</p>
                 <p>LATITUDE <br />{location.lat}</p>

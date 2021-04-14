@@ -1,4 +1,4 @@
-import { Popup, Marker,MapContainer } from 'react-leaflet'
+import { Popup, Marker} from 'react-leaflet'
 import { useState } from 'react'
 import deleteObject from './deleteObject';
 import PostObject from './PostObject';

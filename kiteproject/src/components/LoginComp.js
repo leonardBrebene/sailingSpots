@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react'
+import React, {  useState } from 'react'
 import { useHistory,Link } from 'react-router-dom'
 import { Form, Button, Card, Container } from 'react-bootstrap'
 import useFetch from './useFetch'
@@ -7,7 +7,7 @@ import useFetch from './useFetch'
 export default function LoginComp() {
     const [authDates, setAuthDates] = useState({ name: '', email: '', password: '' })
     const history = useHistory()
-    const { data, isPending, error, setData } = useFetch("https://606cae1c603ded0017502834.mockapi.io/user/11");
+    const { data, isPending } = useFetch("https://606cae1c603ded0017502834.mockapi.io/user/11");
 
 
     const handleChange = (e) => {
@@ -31,7 +31,7 @@ export default function LoginComp() {
                 <div className='w-100' style={{ maxWidth: '400px' }} >
                     <Card>
                         <Card.Body>
-                            <h2 className='text-right mb-4' style={{fontFamily:'Jazz LET'}}>Kite</h2>
+                            <h2 className='text-right mb-4' style={{fontFamily:'Jazz LET'}}>KiteSurf</h2>
                             <h2 className='text-center mb-4'>Sign Up</h2>
                             
                             <Form onSubmit={handleSubmit} >

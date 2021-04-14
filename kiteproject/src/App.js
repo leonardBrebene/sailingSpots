@@ -1,9 +1,5 @@
 import './App.css';
-import KiteMap from './components/KiteMap';
-import KiteTable from './components/KiteTable';
 import SignUp from './components/SignUp';
-import { Container } from 'react-bootstrap'
-import AuthProvider from './contexts/AuthContext';
 import {BrowserRouter as Router,Switch,Route}from 'react-router-dom'
 import DashBoard from './components/DashBoard';
 import LoginComp from './components/LoginComp';

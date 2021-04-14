@@ -13,7 +13,6 @@ export default function AuthProvider({children}) {
    const [currentUser,setCurrentUser]=useState()
    
 
-
    const value={
        currentUser,
    
