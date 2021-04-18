@@ -10,6 +10,7 @@ import useFetch from './useFetch';
 import PopUpComp from './PopUpComp';
 import deleteObject from './deleteObject';
 import PostObject from './PostObject';
+import {motion} from 'framer-motion'
 
 
 const KiteMap = () => {
@@ -17,6 +18,7 @@ const KiteMap = () => {
   const { data: favourites, isPending: favouriteIsPending, } = useFetch("https://606cae1c603ded0017502834.mockapi.io/favourites")
   const [isOpen, setIsOpen] = useState(false);
   const [initialData, setInitialData] = useState(null);
+
 
 
   useEffect(() => {
@@ -41,17 +43,24 @@ const KiteMap = () => {
 
   const blueIcon = new Icon({
     iconUrl: orangeicon,
-    iconSize: [25, 41],
+    iconSize: [25,41],
   });
   const orangeIcon = new Icon({
     iconUrl: blueicon,
-    iconSize: [25, 41],
+    iconSize: [25,41],
   });;
 
   const filterData = (item) => {
     setData(initialData.filter((location) => {
       return location.country.toLowerCase().includes(item.country.toLowerCase()) && location.probability >= item.windProb;
     }))
+  }
+
+  
+  function ceva(x) {
+    console.log(x)
+    x.style.height = "64px";
+    x.style.width = "64px";       
   }
 
   return (
@@ -91,14 +100,14 @@ const KiteMap = () => {
         {/* {data && <PopUpComp  initialDataP={initialData}  dataP ={data} />} // am incercat sa integrez Marker intr-o alta componenta*/} 
         {data.map(location =>
           <Marker 
-
+            opacity={50}
             icon={location.favourite ? blueIcon : orangeIcon}
             key={location.id}
             position={[location.lat, location.long]}
             onClick={initialData === null && setInitialData(data)}
           >
-
-            <Popup                                           
+              
+            <Popup                                       
               position={[location.lat, location.long]}
               onClick={initialData === null && setInitialData(data)}
             >
@@ -114,7 +123,7 @@ const KiteMap = () => {
                   style={location.favourite ? { backgroundColor: 'orange' } : { backgroundColor: 'blue' }} className='addFavoritesButton'
                   onClick={(e) => {
                     e.preventDefault();
-                    if (location.favourite) { deleteObject('spot', location.id); }
+                    if (location.favourite) { deleteObject('favourites', location.id); }
                       else {PostObject('favourites',{spot:location.id, createdAt:new Date()} ); }
                     const tempData = (data => data.map(item => {
                       if (item.id === location.id) {
