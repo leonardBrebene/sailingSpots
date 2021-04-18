@@ -5,11 +5,19 @@ const POP_UP_STYLE = {
     
     position: 'fixed',
     right: '7%',
-    top: '9%',
+    top: '10%',
     padding: '10px',
     zIndex: 1000,
-    backgroundColor: 'rgb(179, 230, 255,0.3)',
+    backgroundColor: 'rgb(179, 230, 255,0.3)',   
+}
+const POP_UP_STYLE2 = {
     
+    position: 'fixed',
+    left: '10%',
+    top: '10%',
+    padding: '10px',
+    zIndex: 1000,
+    backgroundColor: 'rgb(179, 230, 255,0.3)',   
 }
 const OVERLAY_STYLE = {
     position: 'fixed',
@@ -22,14 +30,14 @@ const OVERLAY_STYLE = {
 }
 
 
-export default function FilterPopup({ open, children, closeIt}) {
+export default function PopUpPortal({ open,isFilter, children, closeIt}) {
     if (!open) return null
 
     return ReactDom.createPortal
     (
         <>
             <div onClick={closeIt} style={OVERLAY_STYLE} />
-            <div style={POP_UP_STYLE}>
+            <div style={isFilter?POP_UP_STYLE:POP_UP_STYLE2}>
                 {children}
             </div>
         </>,

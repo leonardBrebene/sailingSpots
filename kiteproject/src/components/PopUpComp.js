@@ -1,7 +1,7 @@
 import { Popup, Marker} from 'react-leaflet'
 import { useState } from 'react'
 import deleteObject from './deleteObject';
-import PostObject from './PostObject';
+import postObject from './postObject';
 import { Icon } from 'leaflet';
 import orangeicon from '../images/orange-icon.png'; import blueicon from '../images/blue-icon.png';
 
@@ -48,7 +48,7 @@ const PopUpComp = ({ initialDataP, dataP, }) => {
                                 onClick={(e) => {
                                     e.preventDefault();
                                     if (location.favourite) { deleteObject('spot', location.id); }
-                                    else { PostObject('favourites', { spot: location.id, createdAt: new Date() }); }
+                                    else { postObject('favourites', { spot: location.id, createdAt: new Date() }); }
                                     const tempData = (data => data.map(item => {
                                         if (item.id === location.id) {
                                             return {

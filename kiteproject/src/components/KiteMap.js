@@ -1,6 +1,6 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { Icon } from 'leaflet';
-import FilterPopup from './FilterPopup'
+import PopUpPortal from './PopUpPortal'
 import { useState, useEffect } from 'react'
 import FilterForm from './FilterForm'
 import filter from '../images/filter.png'
@@ -9,14 +9,16 @@ import './KiteMap.css'
 import useFetch from './useFetch';
 import PopUpComp from './PopUpComp';
 import deleteObject from './deleteObject';
-import PostObject from './PostObject';
-import {motion} from 'framer-motion'
+import postObject from './postObject';
+import AddNewSpot from './AddNewSpot';
+import { Button} from 'react-bootstrap'
 
 
 const KiteMap = () => {
   const { data, isPending, error, setData } = useFetch("https://606cae1c603ded0017502834.mockapi.io/spot");
   const { data: favourites, isPending: favouriteIsPending, } = useFetch("https://606cae1c603ded0017502834.mockapi.io/favourites")
-  const [isOpen, setIsOpen] = useState(false);
+  const [filterIsOpen, setFilterIsOpen] = useState(false);
+  const [addSpotIsOpen, setAddSpotIsOpen] = useState(false);
   const [initialData, setInitialData] = useState(null);
 
 
@@ -34,7 +36,6 @@ const KiteMap = () => {
       console.log('favourites', favourites)
     }
 
-
     console.log('am intrat in useeffect kitemap')
 
   }, [isPending, favouriteIsPending, setData, favourites])
@@ -43,11 +44,11 @@ const KiteMap = () => {
 
   const blueIcon = new Icon({
     iconUrl: orangeicon,
-    iconSize: [25,41],
+    iconSize: [25, 41],
   });
   const orangeIcon = new Icon({
     iconUrl: blueicon,
-    iconSize: [25,41],
+    iconSize: [25, 41],
   });;
 
   const filterData = (item) => {
@@ -56,23 +57,17 @@ const KiteMap = () => {
     }))
   }
 
-  
-  function ceva(x) {
-    console.log(x)
-    x.style.height = "64px";
-    x.style.width = "64px";       
-  }
 
   return (
 
     <div>
 
       {/* <div className='addSpotButton'>Adds Spot</div> */}
-     <div style={{position:'relative'}}>
-      {error && <div>{error}</div>}
-      {isPending && <div>Loading..</div>}
+      <div style={{ position: 'relative' }}>
+        {error && <div>{error}</div>}
+        {isPending && <div>Loading..</div>}
       </div>
-
+      
       <MapContainer center={[35.505, 10.09]} zoom={3} scrollWheelZoom={true}  >
         <TileLayer
           onClick={() => { setInitialData(data); }}
@@ -81,14 +76,20 @@ const KiteMap = () => {
         />
 
         <div onClick={() => {
-          setIsOpen(true); initialData === null && setInitialData(data);
+          setFilterIsOpen(true); initialData === null && setInitialData(data);
         }} ><img className='filterButton' src={filter} alt='filter' /></div>
 
-        <FilterPopup open={isOpen} closeIt={() => { setIsOpen(false) }} >
-          <FilterForm onFilter={filterData} />
-        </FilterPopup>
+        <Button  style={{ top:'1%',zIndex:'1000',position: 'relative',left:'50px' }}
+        onClick={()=>setAddSpotIsOpen(true)} >Add new spot</Button>
 
-        {isOpen === true && <FilterForm onFilter={filterData} />}
+        <PopUpPortal open={filterIsOpen} isFilter={true} closeIt={() => { setFilterIsOpen(false) }} >
+          <FilterForm onFilter={filterData} />
+        </PopUpPortal>
+        {filterIsOpen === true && <FilterForm onFilter={filterData} />}
+
+        <PopUpPortal open={addSpotIsOpen} isFilter={false} closeIt={() => { setAddSpotIsOpen(false) }} >
+          <AddNewSpot />
+        </PopUpPortal>
 
         <Marker
           position={[45.097, 25.444]}>
@@ -97,23 +98,23 @@ const KiteMap = () => {
           </Popup>
         </Marker>
 
-        {/* {data && <PopUpComp  initialDataP={initialData}  dataP ={data} />} // am incercat sa integrez Marker intr-o alta componenta*/} 
+        {/* {data && <PopUpComp  initialDataP={initialData}  dataP ={data} />} // am incercat sa integrez Marker intr-o alta componenta*/}
         {data.map(location =>
-          <Marker 
+          <Marker
             opacity={50}
             icon={location.favourite ? blueIcon : orangeIcon}
             key={location.id}
             position={[location.lat, location.long]}
             onClick={initialData === null && setInitialData(data)}
           >
-              
-            <Popup                                       
+
+            <Popup
               position={[location.lat, location.long]}
               onClick={initialData === null && setInitialData(data)}
             >
               <div>
 
-                
+
                 <p> LocationID<br />{location.probability}</p>
                 <p> WIND PROBABILITY<br />{location.probability}</p>
                 <p>LATITUDE <br />{location.lat}</p>
@@ -124,7 +125,7 @@ const KiteMap = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     if (location.favourite) { deleteObject('favourites', location.id); }
-                      else {PostObject('favourites',{spot:location.id, createdAt:new Date()} ); }
+                    else { postObject('favourites', { spot: location.id, createdAt: new Date() }); }
                     const tempData = (data => data.map(item => {
                       if (item.id === location.id) {
                         return {
