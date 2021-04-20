@@ -14,6 +14,7 @@ import AddNewSpot from './AddNewSpot';
 import { Button} from 'react-bootstrap'
 
 
+
 const KiteMap = () => {
   const { data, isPending, error, setData } = useFetch("https://606cae1c603ded0017502834.mockapi.io/spot");
   const { data: favourites, isPending: favouriteIsPending, } = useFetch("https://606cae1c603ded0017502834.mockapi.io/favourites")

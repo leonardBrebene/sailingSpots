@@ -6,16 +6,16 @@ const POP_UP_STYLE = {
     position: 'fixed',
     right: '7%',
     top: '10%',
-    padding: '10px',
+    padding: '5px',
     zIndex: 1000,
     backgroundColor: 'rgb(179, 230, 255,0.3)',   
 }
 const POP_UP_STYLE2 = {
     
     position: 'fixed',
-    left: '10%',
-    top: '10%',
-    padding: '10px',
+    left:'10%',
+    bottom: '33%',
+    padding: '5px',
     zIndex: 1000,
     backgroundColor: 'rgb(179, 230, 255,0.3)',   
 }
@@ -38,7 +38,7 @@ export default function PopUpPortal({ open,isFilter, children, closeIt}) {
         <>
             <div onClick={closeIt} style={OVERLAY_STYLE} />
             <div style={isFilter?POP_UP_STYLE:POP_UP_STYLE2}>
-                {children}
+                {children} 
             </div>
         </>,
         document.getElementById('portal')
