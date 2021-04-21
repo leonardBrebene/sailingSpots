@@ -34,14 +34,11 @@ const KiteMap = () => {
           favourite: item2
         }
       })))
-      console.log('favourites', favourites)
+      //console.log('favourites', favourites)
     }
 
-    console.log('am intrat in useeffect kitemap')
-
   }, [isPending, favouriteIsPending, setData, favourites])
-
-  console.log('initialdata', initialData)
+ // console.log('initialdata', initialData)
 
   const blueIcon = new Icon({
     iconUrl: orangeicon,
@@ -58,6 +55,12 @@ const KiteMap = () => {
     }))
   }
 
+  const addNewSpot=(theSpot)=>{
+    postObject('spot',theSpot);
+    setData(prevState => [...prevState, theSpot]);
+    setInitialData(data);
+  }
+
 
   return (
 
@@ -71,7 +74,6 @@ const KiteMap = () => {
       
       <MapContainer center={[35.505, 10.09]} zoom={3} scrollWheelZoom={true}  >
         <TileLayer
-          onClick={() => { setInitialData(data); }}
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
@@ -88,8 +90,8 @@ const KiteMap = () => {
         </PopUpPortal>
         {filterIsOpen === true && <FilterForm onFilter={filterData} />}
 
-        <PopUpPortal open={addSpotIsOpen} isFilter={false} closeIt={() => { setAddSpotIsOpen(false) }} >
-          <AddNewSpot />
+        <PopUpPortal open={addSpotIsOpen}  closeIt={() => { setAddSpotIsOpen(false) }} >
+          <AddNewSpot onAddNewSpot={addNewSpot} />
         </PopUpPortal>
 
         <Marker
@@ -106,16 +108,17 @@ const KiteMap = () => {
             icon={location.favourite ? blueIcon : orangeIcon}
             key={location.id}
             position={[location.lat, location.long]}
-            onClick={initialData === null && setInitialData(data)}
+            eventHandlers={{                //everytime you click on a marker the initialData will update
+              click: () => {
+                setInitialData(data);        
+              },
+            }}
           >
 
             <Popup
               position={[location.lat, location.long]}
-              onClick={initialData === null && setInitialData(data)}
             >
               <div>
-
-
                 <p> LocationID<br />{location.probability}</p>
                 <p> WIND PROBABILITY<br />{location.probability}</p>
                 <p>LATITUDE <br />{location.lat}</p>
@@ -126,7 +129,7 @@ const KiteMap = () => {
                   onClick={(e) => {
                     e.preventDefault();
                     if (location.favourite) { deleteObject('favourites', location.id); }
-                    else { postObject('favourites', { spot: location.id, createdAt: new Date() }); }
+                    else { postObject('favourites', { spot: location.id, createdAt: new Date() }); };
                     const tempData = (data => data.map(item => {
                       if (item.id === location.id) {
                         return {

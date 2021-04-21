@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 
-const POP_UP_STYLE = {
+const FYLTER_FORM_STYLE = {
     
     position: 'fixed',
     right: '7%',
@@ -10,15 +10,7 @@ const POP_UP_STYLE = {
     zIndex: 1000,
     backgroundColor: 'rgb(179, 230, 255,0.3)',   
 }
-const POP_UP_STYLE2 = {
-    
-    position: 'fixed',
-    left:'10%',
-    bottom: '33%',
-    padding: '5px',
-    zIndex: 1000,
-    backgroundColor: 'rgb(179, 230, 255,0.3)',   
-}
+
 const OVERLAY_STYLE = {
     position: 'fixed',
     top: 0,
@@ -26,7 +18,7 @@ const OVERLAY_STYLE = {
     bottom: 0,
     left: 0,
     backgroundColor: 'rgba(0,0,0,.1)',
-    zIndex: 1000
+    zIndex: 800
 }
 
 
@@ -37,7 +29,7 @@ export default function PopUpPortal({ open,isFilter, children, closeIt}) {
     (
         <>
             <div onClick={closeIt} style={OVERLAY_STYLE} />
-            <div style={isFilter?POP_UP_STYLE:POP_UP_STYLE2}>
+            <div style={isFilter&&FYLTER_FORM_STYLE}>
                 {children} 
             </div>
         </>,

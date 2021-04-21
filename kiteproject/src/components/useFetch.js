@@ -10,7 +10,6 @@ const useFetch = (url) => {
 
     useEffect(() => {
         setTimeout(() => {
-            console.log('am intrat in useeffect')
             fetch(url)
                 .then(res => {
                     if (!res.ok) {
