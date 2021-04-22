@@ -55,8 +55,10 @@ const KiteMap = () => {
     }))
   }
 
-  const addNewSpot=(theSpot)=>{
+  const addNewSpot=({theSpot})=>{
     postObject('spot',theSpot);
+     console.log('data', data)
+    console.log('in kitemap', theSpot);
     setData(prevState => [...prevState, theSpot]);
     setInitialData(data);
   }
