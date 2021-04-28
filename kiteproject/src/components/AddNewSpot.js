@@ -1,15 +1,16 @@
-import { MapContainer, TileLayer, Marker, FeatureGroup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import './AddNewSpot.css'
 import { useState } from 'react'
+import { Button, Card, Container,Form} from 'react-bootstrap'
+
 
 
 const AddNewSpot = ({ onAddNewSpot }) => {
 
   const [theSpot, setTheSpot] = useState({
     month: 'january', probability: 51, long: 25.444, lat: 45.097, country: '', name: '',favourite: false,
-    createdAt: '2019-11-25T12:56:18.896Z',id: '99'
+    createdAt: '2019-11-25T12:56:18.896Z',id: ''
   })
-
 
   //   {
   //     "month": "April",
@@ -25,9 +26,8 @@ const AddNewSpot = ({ onAddNewSpot }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     onAddNewSpot({ theSpot });
-    console.log(theSpot.JSON);
   }
-  console.log(theSpot);
+
   return (
     <div>
       <MapContainer center={[35.505, 10.09]} zoom={2} scrollWheelZoom={true} className='leaflet-container2' >
@@ -44,33 +44,38 @@ const AddNewSpot = ({ onAddNewSpot }) => {
                 lat: JSON.stringify(e.target._latlng.lat).slice(0, 6),
                 long: JSON.stringify(e.target._latlng.lng).slice(0, 6)
               });
-            }
+            },
           }}
           position={[theSpot.lat, theSpot.long]}
           draggable={true}
         >
-        </Marker>
+          <Popup  > Drag me</Popup>
+          
+        </Marker >
 
-
-        <form onSubmit={onSubmit} style={{ zIndex: 1000, position: 'fixed', left: '15%' }}>
-          <section>
-            <label className='label-field'>Spot Name </label>
-            <input className='input-field' type="text" value={theSpot.name} onChange={(e) => {
-              setTheSpot({ ...theSpot, name: e.target.value });
-            }} />
-          </section>
-
-          <section>
-            <label className='label-field'>Country</label>
-            <input className='input-field' type="text" value={theSpot.country} onChange={(e) => {
-              setTheSpot({ ...theSpot, country: e.target.value });
-            }} />
-          </section>
-          <button style={{ backgroundColor: 'blue', color: 'aliceblue', borderColor: 'blue', left: '30%', position: 'relative', margin: '10px' }}>Spot this!</button>
-
-        </form>
-
-
+         <Container className='d-flex align-item-left justify-content-left'
+                style={{ minHeight: '100vh', position: 'relative', top: '20px',left:'-20%', zIndex:1000, maxWidth: '300px' }}>
+                <div className='w-100' style={{ maxWidth: '200px' }} >
+                    
+                        <Card.Body>
+                            <h2 className='text-right mb-4' style={{ fontFamily: 'Jazz LET' }}>KiteSurf</h2>
+                            
+                            <Form  onSubmit={onSubmit}>
+                                <Form.Group id='spotName'>
+                                    <Form.Label>Spot Name</Form.Label>
+                                    <Form.Control type='text' required onChange={(e) => {setTheSpot({ ...theSpot, name: e.target.value })}}/>
+                                </Form.Group>
+                                
+                                <Form.Group id='country'>
+                                    <Form.Label>Country</Form.Label>
+                                    <Form.Control type='text' required onChange={(e) => {setTheSpot({ ...theSpot, country: e.target.value })}} />
+                                </Form.Group>
+                                <Button className='w-100' type='submit'>Add spot </Button>
+                            </Form>
+                        </Card.Body>
+                </div>
+           </Container>
+           
       </MapContainer>
     </div>
   )

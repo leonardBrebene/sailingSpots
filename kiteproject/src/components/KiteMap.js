@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import FilterForm from './FilterForm'
 import filter from '../images/filter.png'
 import orangeicon from '../images/orange-icon.png'; import blueicon from '../images/blue-icon.png';
-import './KiteMap.css'
+import './kiteMap.css'
 import useFetch from './useFetch';
 import PopUpComp from './PopUpComp';
 import deleteObject from './deleteObject';
@@ -56,11 +56,11 @@ const KiteMap = () => {
   }
 
   const addNewSpot=({theSpot})=>{
-    postObject('spot',theSpot);
      console.log('data', data)
-    console.log('in kitemap', theSpot);
-    setData(prevState => [...prevState, theSpot]);
-    setInitialData(data);
+     const theSpotWithId={...theSpot,id:(parseInt((data[data.length-1]).id)+1).toString()} //take the incremented id of the last element
+     setData(prevState => [...prevState, theSpotWithId]);
+     postObject('spot',theSpotWithId);
+     setInitialData(data);
   }
 
 
