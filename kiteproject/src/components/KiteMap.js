@@ -93,7 +93,7 @@ const KiteMap = () => {
         {filterIsOpen === true && <FilterForm onFilter={filterData} />}
 
         <PopUpPortal open={addSpotIsOpen}  closeIt={() => { setAddSpotIsOpen(false) }} >
-          <AddNewSpot onAddNewSpot={addNewSpot} />
+          <AddNewSpot onAddNewSpot={addNewSpot} closeIt={() => {setAddSpotIsOpen(false) }} />
         </PopUpPortal>
 
         <Marker
