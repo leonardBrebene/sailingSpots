@@ -2,14 +2,42 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import './AddNewSpot.css'
 import { useState } from 'react'
 import { Button, Card, Container, Form } from 'react-bootstrap'
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { DateRangePicker } from "react-date-range";
+import { getDate, getDay, getMonth } from "date-fns";
 
 
 const AddNewSpot = ({ onAddNewSpot, closeIt }) => {
 
   const [theSpot, setTheSpot] = useState({
     month: 'january', probability: 51, long: 25.444, lat: 45.097, country: '', name: '', favourite: false,
-    createdAt: '2019-11-25T12:56:18.896Z', id: ''
+    createdAt: '2019-11-25T12:56:18.896Z', id: '', bestBetween: ''
   })
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const selectionRange = {
+    startDate: startDate,
+    endDate: endDate,
+    key: "selection",
+  };
+
+  function handleSelect(ranges) {
+    const monthNames = ["January", "February", "March", "April", "May", "June",
+                    "July", "August", "September", "October", "November", "December"];
+
+    setStartDate(ranges.selection.startDate);
+    setEndDate(ranges.selection.endDate);
+
+    setTheSpot({
+      ...theSpot, bestBetween: getDate(ranges.selection.startDate) + ' ' + monthNames[getMonth(ranges.selection.startDate)] + ' - ' +
+        getDate(ranges.selection.endDate) + ' ' + monthNames[getMonth(ranges.selection.endDate)]
+    });
+
+    console.log(theSpot);
+
+  }
 
   //   {
   //     "month": "April",
@@ -53,7 +81,7 @@ const AddNewSpot = ({ onAddNewSpot, closeIt }) => {
         </Marker >
 
         <Container className='d-flex align-item-left justify-content-left'
-          style={{ minHeight: '100vh', position: 'relative', top: '20px', left: '-20%', zIndex: 1000, maxWidth: '300px' }}>
+          style={{ minHeight: '100vh', position: 'relative', left: '-20%', zIndex: 1000, maxWidth: '300px' }}>
           <div className='w-100' style={{ maxWidth: '200px' }} >
 
             <Card.Body>
@@ -70,17 +98,19 @@ const AddNewSpot = ({ onAddNewSpot, closeIt }) => {
                   <Form.Control type='text' required onChange={(e) => { setTheSpot({ ...theSpot, country: e.target.value }) }} />
                 </Form.Group>
 
-                <Form.Group id='spotDate'>
+                {/* <Form.Group id='spotDate'>
                   <Form.Label>Spot Date</Form.Label>
                   <Form.Control type='date' required onChange={(e) => { setTheSpot({ ...theSpot, date: e.target.value }) }} />
-                </Form.Group>
+                </Form.Group> */}
+
+                <DateRangePicker ranges={[selectionRange]} onChange={(e) => { handleSelect(e); }} />
 
                 <Button className='w-100 h-20' type='submit' size="sm">Add spot </Button>
                 <Button className='w-100 ' variant="danger" size="sm" style={{ marginTop: '5px' }} onClick={closeIt} >Cancel adding </Button>
               </Form>
             </Card.Body>
           </div>
-        
+
         </Container>
 
       </MapContainer>
