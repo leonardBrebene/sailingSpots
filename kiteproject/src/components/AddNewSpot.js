@@ -6,6 +6,7 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRangePicker } from "react-date-range";
 import { getDate, getDay, getMonth } from "date-fns";
+import { faCommentsDollar } from "@fortawesome/free-solid-svg-icons";
 
 
 const AddNewSpot = ({ onAddNewSpot, closeIt }) => {
@@ -35,9 +36,9 @@ const AddNewSpot = ({ onAddNewSpot, closeIt }) => {
         getDate(ranges.selection.endDate) + ' ' + monthNames[getMonth(ranges.selection.endDate)]
     });
 
-    console.log(theSpot);
-
   }
+
+  console.log(theSpot);
 
   //   {
   //     "month": "April",
@@ -97,11 +98,6 @@ const AddNewSpot = ({ onAddNewSpot, closeIt }) => {
                   <Form.Label>Country</Form.Label>
                   <Form.Control type='text' required onChange={(e) => { setTheSpot({ ...theSpot, country: e.target.value }) }} />
                 </Form.Group>
-
-                {/* <Form.Group id='spotDate'>
-                  <Form.Label>Spot Date</Form.Label>
-                  <Form.Control type='date' required onChange={(e) => { setTheSpot({ ...theSpot, date: e.target.value }) }} />
-                </Form.Group> */}
 
                 <DateRangePicker ranges={[selectionRange]} onChange={(e) => { handleSelect(e); }} />
 

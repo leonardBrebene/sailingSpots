@@ -13,12 +13,11 @@ const DashBoard=()=>{
      }
 
     return(
-        <>
-        
-           <Card style={{border:'none'}} className='d-inline' >
+        <>  
+           <Card style={{border:'none',display:'inline'}}  >
            <h3 className='text-left' >KiteSurf</h3>
-           <FontAwesomeIcon icon={faUserAlt} style={{position:'relative', color:'blue', left:'97%',bottom:'30px', fontSize: '24px'}} />
-           <Button  onClick={handleLogOut} style={{marginLeft:'94%'}} >LogOut</Button>
+           <FontAwesomeIcon icon={faUserAlt} style={{position:'relative', color:'blue', right:'10px',bottom:'30px',float:'right', fontSize: '24px'}} />
+           <Button  onClick={handleLogOut} style={{position:'relative', width:'100px',float:'right',left:'20px',bottom:'3px'}} >LogOut</Button>
             </Card>
 
         <KiteMap/>

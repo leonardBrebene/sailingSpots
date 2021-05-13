@@ -7,7 +7,6 @@ import filter from '../images/filter.png'
 import orangeicon from '../images/orange-icon.png'; import blueicon from '../images/blue-icon.png';
 import './kiteMap.css'
 import useFetch from './useFetch';
-import PopUpComp from './PopUpComp';
 import deleteObject from './deleteObject';
 import postObject from './postObject';
 import AddNewSpot from './AddNewSpot';
