@@ -5,6 +5,14 @@
     padding: 10px;
     z-index: 1000;
 }
+.cancelButton{
+    position: absolute;
+    right: 3%;
+    top: 2%;
+    padding: 10px;
+    z-index: 1000; 
+    background-color: red;
+}
 .addSpotButton{
     background-color: blue;
     right:5%;

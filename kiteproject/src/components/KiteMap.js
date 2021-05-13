@@ -11,6 +11,7 @@ import deleteObject from './deleteObject';
 import postObject from './postObject';
 import AddNewSpot from './AddNewSpot';
 import { Button} from 'react-bootstrap'
+import { set } from 'date-fns/esm';
 
 
 
@@ -83,7 +84,10 @@ const KiteMap = () => {
           setFilterIsOpen(true); initialData === null && setInitialData(data);
         }} ><img className='filterButton' src={filter} alt='filter' /></div>
 
-        <Button  style={{ top:'1%',zIndex:'1000',position: 'relative',left:'50px' }}
+        {(initialData&&initialData.length>data.length)&&<Button onClick={()=>setData(initialData) } className='cancelButton' variant="danger" 
+        >Stop Filter</Button> }
+
+        <Button style={{ top:'1%',zIndex:'1000',position: 'relative',left:'50px' }}
         onClick={()=>setAddSpotIsOpen(true)} >Add new spot</Button>
 
         <PopUpPortal open={filterIsOpen} isFilter={true} closeIt={() => { setFilterIsOpen(false) }} >
